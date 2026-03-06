@@ -6,21 +6,33 @@ import { PortfolioPage } from "@/features/portfolio-overview/PortfolioPage";
 import { OrderBookPage } from "@/features/order-book/OrderBookPage";
 import { WatchlistPage } from "@/features/dashboard/WatchlistPage";
 import { useUIStore } from "@/store/ui.store";
+import Loader from "./shared/components/Loader";
+import LoginPage from "./shared/components/Login";
+import ValidateOtp from "./shared/components/ValidateOtp";
+
 
 export default function App() {
   // Starts WebSocket connection — runs once on mount
   useWebSocket();
 
   const activeTab = useUIStore((s) => s.activeTab);
+  const accessToken = useUIStore((s) => s.accessToken);
 
   const renderTab = () => {
+    if (!accessToken && !["login", "preAuth", "validate"].includes(activeTab)) {
+      return <LoginPage />;
+    }
     switch (activeTab) {
       case "dashboard":  return <DashboardPage />;
       case "portfolio":  return <PortfolioPage />;
+      case "login":     return <LoginPage />;
       case "orderbook":  return <OrderBookPage />;
       case "watchlist":  return <WatchlistPage />;
+      case "preAuth":    return <Loader />;
+      case "validate":    return <ValidateOtp />;
       default:           return <DashboardPage />;
     }
+    
   };
 
   return (
@@ -54,3 +66,5 @@ export default function App() {
     </div>
   );
 }
+
+

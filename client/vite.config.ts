@@ -6,4 +6,13 @@ export default defineConfig({
   resolve: {
     alias: { "@": "/src" },
   },
+  server: {
+    proxy: {
+      '/api-proxy': {
+        target: 'https://preprodapisix.omnenest.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-proxy/, ''),
+      },
+    },
+  },
 });
