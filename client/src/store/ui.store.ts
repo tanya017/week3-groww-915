@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { WatchlistItem } from "@/shared/types";
 
+type Feature = { name: string };
+
 type Notification = {
   id: number;
   msg: string;
@@ -24,6 +26,8 @@ type UIState = {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
   logout: () => void;
+  features: Feature[]; // Change features: [] to this
+  setFeatures: (features: Feature[]) => void;
 
   addToWatchlist: (symbol: string) => void;
   removeFromWatchlist: (symbol: string) => void;
@@ -47,6 +51,7 @@ export const useUIStore = create<UIState>((set) => ({
   // bearer token storage
   accessToken: localStorage.getItem("auth_token"),
   features: [],
+  setFeatures: (features) => set({ features }),
 
   setAccessToken: (token) => {
     if (token) localStorage.setItem("auth_token", token);
