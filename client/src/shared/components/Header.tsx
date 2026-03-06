@@ -1,12 +1,19 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useMarketStore } from "@/store";
 import { useUIStore } from "@/store";
+import { useGetFeatures } from "@/services/apis/useGetFeatures";
 
 export const Header = memo(function Header() {
   const isConnected = useMarketStore((s) => s.isConnected);
-  const { activeTab, setActiveTab, accessToken, logout } = useUIStore();
+  const { activeTab, setActiveTab, accessToken, logout,features } = useUIStore();
+  const { fetchFeatures } = useGetFeatures();
   const tickCount = useMarketStore((s) => s.tickCount);
 
+  useEffect(() => {
+    if (accessToken) {
+      fetchFeatures();
+    }
+  }, [accessToken]);
 
   const tabs: Array<{ id: typeof activeTab; label: string }> = [
     { id: "dashboard", label: "Market" },
@@ -80,7 +87,7 @@ export const Header = memo(function Header() {
         ))}
       </nav> */}
       {/* 2. AUTH GUARD: Only show nav if accessToken exists */}
-      {accessToken ? (
+      {/* {accessToken ? (
         <nav style={{ display: "flex", gap: "4px", flex: 1 }}>
           {tabs.map((t) => (
             <button
@@ -112,6 +119,33 @@ export const Header = memo(function Header() {
         </nav>
       ) : (
         <div style={{ flex: 1 }} /> // Spacer to keep layout consistent
+      )} */}
+
+      {/* Using dynamic features from API */}
+      {accessToken ? (
+        <nav style={{ display: "flex", gap: "4px", flex: 1, overflowX: "auto" }}>
+          {features.map((feature) => (
+            <button
+              key={feature.name}
+              onClick={() => setActiveTab("dashboard")} // Or logic to switch sub-views
+              style={{
+                background: activeTab === feature.name ? "var(--bg-elevated)" : "none",
+                border: "1px solid transparent",
+                color: "var(--text-muted)",
+                borderRadius: "var(--radius)",
+                padding: "5px 14px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                whiteSpace: "nowrap",
+                cursor: "pointer",
+              }}
+            >
+              {feature.name.toUpperCase()}
+            </button>
+          ))}
+        </nav>
+      ) : (
+        <div style={{ flex: 1 }} />
       )}
 
       {/* Status */}
