@@ -1,5 +1,11 @@
 export function formatPrice(price: number): string {
-  return "₹" + price.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (
+    "₹" +
+    price.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  );
 }
 
 export function formatPercent(value: number): string {
@@ -14,7 +20,7 @@ export function formatChange(value: number): string {
 
 export function formatVolume(volume: number): string {
   if (volume >= 10_000_000) return (volume / 10_000_000).toFixed(2) + " Cr";
-  if (volume >= 100_000)    return (volume / 100_000).toFixed(2) + " L";
+  if (volume >= 100_000) return (volume / 100_000).toFixed(2) + " L";
   return volume.toLocaleString("en-IN");
 }
 
@@ -34,4 +40,10 @@ export function getBgColor(value: number): string {
 
 export function clamp(val: number, min: number, max: number): number {
   return Math.min(Math.max(val, min), max);
+}
+
+export function timeStampGenerator() {
+  // const timestamp = ;  // current time in milliseconds
+  // pm.environment.set("current_timestamp", timestamp);
+  return Date.now();
 }
