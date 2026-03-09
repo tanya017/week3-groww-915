@@ -1,20 +1,25 @@
 import { memo, useEffect } from "react";
 import { useMarketStore } from "@/store";
 import { useUIStore } from "@/store";
-import getFeatures from "@/services/apis/features";
+import getFeatures from "@/services/apis/dashConfig";
 
 export const Header = memo(function Header() {
   const isConnected = useMarketStore((s) => s.isConnected);
-  const { activeTab, setActiveTab, accessToken, logout, features, setFeatures } =
-    useUIStore();
-  // const { fetchFeatures } = useGetFeatures();
+  const {
+    activeTab,
+    setActiveTab,
+    accessToken,
+    logout,
+    features,
+    setFeatures,
+  } = useUIStore();
   const tickCount = useMarketStore((s) => s.tickCount);
 
   useEffect(() => {
     const initFeatures = async () => {
       if (accessToken) {
         const data = await getFeatures(accessToken);
-        if(data) setFeatures(data);
+        if (data) setFeatures(data);
       }
     };
     initFeatures();
@@ -26,6 +31,21 @@ export const Header = memo(function Header() {
   //   { id: "orderbook", label: "Order Book" },
   //   { id: "watchlist", label: "Watchlist" },
   // ];
+
+  const changeTab = (name: string) => {
+    switch (name) {
+      case "watchlist": {
+        setActiveTab("watchlistAPI");
+        break;
+      }
+      case "indices": {
+        setActiveTab("indices");
+        break;
+      }
+      default:
+        setActiveTab("dashboard");
+    }
+  };
 
   return (
     <header
@@ -55,22 +75,13 @@ export const Header = memo(function Header() {
             fontFamily: "var(--font-display)",
             fontSize: "20px",
             fontWeight: "800",
-            color: "var(--green)",
+            // color: "var(--green)",
+            color: "#0000ff",
             letterSpacing: "-0.5px",
           }}
         >
           OmneNest
         </span>
-        {/* <span
-          style={{
-            fontSize: "9px",
-            color: "var(--text-muted)",
-            letterSpacing: "2px",
-            fontFamily: "var(--font-mono)",
-          }}
-        >
-          915
-        </span> */}
       </div>
 
       {/* Nav tabs */}
@@ -133,13 +144,12 @@ export const Header = memo(function Header() {
           {features.map((feature) => (
             <button
               key={feature.name}
-              // onClick={feature.name.toLowerCase() === 'watchlist' ? ()=>setActiveTab('watchlist') : undefined}
-              onClick={
-                feature.name.toLowerCase() === "watchlist"
-                  ? () => setActiveTab("watchlistAPI")
-                  : undefined
-              }
-              // onClick={() => setActiveTab("dashboard")} // Or logic to switch sub-views
+              // onClick={
+              //   feature.name.toLowerCase() === "watchlist"
+              //     ? () => setActiveTab("watchlistAPI")
+              //     : undefined
+              // }
+              onClick={() =>changeTab(feature.name.toLowerCase())}
               style={{
                 background:
                   activeTab === feature.name ? "var(--bg-elevated)" : "none",
@@ -206,7 +216,6 @@ export const Header = memo(function Header() {
         </div>
       </div>
 
-      {/* Logout Button: Only visible if logged in */}
       {accessToken && (
         <button
           onClick={logout}

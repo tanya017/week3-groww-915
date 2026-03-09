@@ -1,27 +1,25 @@
 import { BASE_URL, getHeaders } from "@/shared/utils/api";
 import axios from "axios";
 
- const login = async(
-  onSuccess: (data: void) => void,
-  onError: (err: void) => void,
+const validateOtp = async (
+  onSuccess: (data: any) => void,
+  onError: (err: any) => void,
 ) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/v1/api/auth/login`,
+      `${BASE_URL}/v2/api/auth/validate-otp`,
       {
         username: "AMITH1",
-        password: "abc@12345",
+        otp: 1234,
       },
       {
         headers: getHeaders(),
       },
     );
 
-    console.log("Login Successful");
-
     onSuccess(response.data);
   } catch (error: any) {
     onError(error);
   }
 };
-export default login;
+export default validateOtp;

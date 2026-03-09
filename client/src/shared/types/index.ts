@@ -58,3 +58,33 @@ export interface WatchlistResponse {
   predefinedWatchlists: Watchlist[];
   defaultWatchlistId: number;
 }
+
+// Watchlist/list api types - to display scrips
+export interface Scrip {
+  scripToken: string;
+  symbolName: string;
+  tradingSymbol: string;
+  lastTradedPrice?: number;
+  previousClosePrice: number;
+  exchange: string;
+  segmentIndicator: string;
+  companyName: string;
+  lotSize: number;
+  strikePrice?: number;
+  optionType?: string;
+}
+
+export interface ListResponse {
+  scrips: Scrip[];
+  scripsCount: number;
+}
+
+
+export interface IndexItem {
+  indexName: string;
+  exchange: string;
+  indexToken: string;
+  decimalPrecision: number;
+  exchangeSegment: string;
+  symbolName: string;
+}

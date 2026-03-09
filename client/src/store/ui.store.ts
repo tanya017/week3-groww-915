@@ -22,13 +22,17 @@ type UIState = {
     | "preAuth"
     | "login"
     | "validate"
-    | 'watchlistAPI';
+    | 'watchlistAPI'
+    | 'list'
+    | 'indices';
   // bearer token related info added
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
   logout: () => void;
   features: Feature[]; // Change features: [] to this
   setFeatures: (features: Feature[]) => void;
+  watchlistId: number;
+  setWatchlistId: (id: number) => void;
 
   addToWatchlist: (symbol: string) => void;
   removeFromWatchlist: (symbol: string) => void;
@@ -53,6 +57,8 @@ export const useUIStore = create<UIState>((set) => ({
   accessToken: localStorage.getItem("auth_token"),
   features: [],
   setFeatures: (features) => set({ features }),
+  watchlistId: 0,
+  setWatchlistId: (watchlistId) => set({watchlistId}),
 
   setAccessToken: (token) => {
     if (token) localStorage.setItem("auth_token", token);

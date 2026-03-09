@@ -58,7 +58,6 @@ export default function LoginPage() {
             <input
               type="email"
               name="email"
-              // required
               style={styles.input}
               placeholder="Username hardcoded"
               value={credentials.email}
@@ -71,7 +70,6 @@ export default function LoginPage() {
             <input
               type="password"
               name="password"
-              // required
               style={styles.input}
               placeholder="••••••••"
               value={credentials.password}
@@ -157,7 +155,7 @@ const styles: Record<string, React.CSSProperties> = {
   button: {
     marginTop: "10px",
     padding: "14px",
-    background: "#2ebd59", // Trading green
+    background: "#2ebd59",
     color: "#000",
     border: "none",
     borderRadius: "4px",
