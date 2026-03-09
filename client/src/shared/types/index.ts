@@ -47,3 +47,14 @@ export type EventLogEntry = {
   kind: EventKind;
   time: string;
 };
+
+// Dynamic Wathclist Response - api
+export interface Watchlist {
+  watchlistName: string;
+  watchlistId: number;
+}
+export interface WatchlistResponse {
+  userDefinedWatchlists: Watchlist[];
+  predefinedWatchlists: Watchlist[];
+  defaultWatchlistId: number;
+}

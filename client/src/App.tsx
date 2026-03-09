@@ -7,8 +7,9 @@ import { OrderBookPage } from "@/features/order-book/OrderBookPage";
 import { WatchlistPage } from "@/features/dashboard/WatchlistPage";
 import { useUIStore } from "@/store/ui.store";
 import Loader from "./shared/components/Loader";
-import LoginPage from "./shared/components/Login";
+import LoginPage from "./pages/LoginPage";
 import ValidateOtp from "./shared/components/ValidateOtp";
+import Watchlist from "./shared/components/Watchlist";
 
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
       case "login":     return <LoginPage />;
       case "orderbook":  return <OrderBookPage />;
       case "watchlist":  return <WatchlistPage />;
+      case "watchlistAPI":  return <Watchlist />;
       case "preAuth":    return <Loader />;
       case "validate":    return <ValidateOtp />;
       default:           return <DashboardPage />;

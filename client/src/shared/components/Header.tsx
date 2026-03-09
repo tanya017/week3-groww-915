@@ -1,27 +1,31 @@
 import { memo, useEffect } from "react";
 import { useMarketStore } from "@/store";
 import { useUIStore } from "@/store";
-import { useGetFeatures } from "@/services/apis/useGetFeatures";
+import getFeatures from "@/services/apis/features";
 
 export const Header = memo(function Header() {
   const isConnected = useMarketStore((s) => s.isConnected);
-  const { activeTab, setActiveTab, accessToken, logout,features } = useUIStore();
-  const { fetchFeatures } = useGetFeatures();
+  const { activeTab, setActiveTab, accessToken, logout, features, setFeatures } =
+    useUIStore();
+  // const { fetchFeatures } = useGetFeatures();
   const tickCount = useMarketStore((s) => s.tickCount);
 
   useEffect(() => {
-    if (accessToken) {
-      fetchFeatures();
-    }
-  }, [accessToken]);
+    const initFeatures = async () => {
+      if (accessToken) {
+        const data = await getFeatures(accessToken);
+        if(data) setFeatures(data);
+      }
+    };
+    initFeatures();
+  }, [accessToken, setFeatures]);
 
-  const tabs: Array<{ id: typeof activeTab; label: string }> = [
-    { id: "dashboard", label: "Market" },
-    { id: "portfolio", label: "Portfolio" },
-    { id: "orderbook", label: "Order Book" },
-    { id: "watchlist", label: "Watchlist" },
-  ];
-
+  // const tabs: Array<{ id: typeof activeTab; label: string }> = [
+  //   { id: "dashboard", label: "Market" },
+  //   { id: "portfolio", label: "Portfolio" },
+  //   { id: "orderbook", label: "Order Book" },
+  //   { id: "watchlist", label: "Watchlist" },
+  // ];
 
   return (
     <header
@@ -55,9 +59,9 @@ export const Header = memo(function Header() {
             letterSpacing: "-0.5px",
           }}
         >
-          groww
+          OmneNest
         </span>
-        <span
+        {/* <span
           style={{
             fontSize: "9px",
             color: "var(--text-muted)",
@@ -66,7 +70,7 @@ export const Header = memo(function Header() {
           }}
         >
           915
-        </span>
+        </span> */}
       </div>
 
       {/* Nav tabs */}
@@ -123,13 +127,22 @@ export const Header = memo(function Header() {
 
       {/* Using dynamic features from API */}
       {accessToken ? (
-        <nav style={{ display: "flex", gap: "4px", flex: 1, overflowX: "auto" }}>
+        <nav
+          style={{ display: "flex", gap: "4px", flex: 1, overflowX: "auto" }}
+        >
           {features.map((feature) => (
             <button
               key={feature.name}
-              onClick={() => setActiveTab("dashboard")} // Or logic to switch sub-views
+              // onClick={feature.name.toLowerCase() === 'watchlist' ? ()=>setActiveTab('watchlist') : undefined}
+              onClick={
+                feature.name.toLowerCase() === "watchlist"
+                  ? () => setActiveTab("watchlistAPI")
+                  : undefined
+              }
+              // onClick={() => setActiveTab("dashboard")} // Or logic to switch sub-views
               style={{
-                background: activeTab === feature.name ? "var(--bg-elevated)" : "none",
+                background:
+                  activeTab === feature.name ? "var(--bg-elevated)" : "none",
                 border: "1px solid transparent",
                 color: "var(--text-muted)",
                 borderRadius: "var(--radius)",

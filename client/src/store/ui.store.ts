@@ -21,7 +21,8 @@ type UIState = {
     | "watchlist"
     | "preAuth"
     | "login"
-    | "validate";
+    | "validate"
+    | 'watchlistAPI';
   // bearer token related info added
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;

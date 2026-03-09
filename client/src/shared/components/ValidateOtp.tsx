@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useUIStore } from "@/store/ui.store";
-import useVerifyOtp from "../../services/apis/useVerifyOtp";
+import verify from "../../services/apis/verify";
 
 export default function ValidateOtp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setActiveTab = useUIStore((s) => s.setActiveTab);
   const setAccessToken = useUIStore((s) => s.setAccessToken);
-  const { verify } = useVerifyOtp();
+  // const { verify } = useVerifyOtp();
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +44,6 @@ export default function ValidateOtp() {
 
         <form onSubmit={handleVerify} style={styles.form}>
           <div style={styles.otpDisplay}>
-            {/* Visual representation of the hardcoded OTP */}
             <span style={styles.codeDigit}>1</span>
             <span style={styles.codeDigit}>2</span>
             <span style={styles.codeDigit}>3</span>
