@@ -1,10 +1,14 @@
-import { timeStampGenerator } from ".";
-
 
 export const BASE_URL = '/api-proxy';
+
 export const key = {
     devicePublicKey: 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Gd3dEUVlKS29aSWh2Y05BUUVCQlFBRFN3QXdTQUpCQUxmQUp0Uy9ZcjVWSCtNUTVUZmkvTG1zNUZldDNMM3g2SUNYMW9zME15RWpjUC9ldmFGdFYrZkJOTTBKRG5WQ3h3alZwRkNHaElybkt1S3d1Y2pUUndrQ0F3RUFBUT09DQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0=',
 }
+
+export function timeStampGenerator() {
+  return Date.now();
+}
+
 export const getHeaders = (accessToken?:string) => {
     const current_timestamp = timeStampGenerator();
     const headers: any = {

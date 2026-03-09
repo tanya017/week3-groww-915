@@ -41,9 +41,3 @@ export function getBgColor(value: number): string {
 export function clamp(val: number, min: number, max: number): number {
   return Math.min(Math.max(val, min), max);
 }
-
-export function timeStampGenerator() {
-  // const timestamp = ;  // current time in milliseconds
-  // pm.environment.set("current_timestamp", timestamp);
-  return Date.now();
-}

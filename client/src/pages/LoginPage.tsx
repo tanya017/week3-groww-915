@@ -1,35 +1,27 @@
 import React, { useState } from "react";
 import { useUIStore } from "@/store/ui.store";
-import useLogin from "@/services/apis/useLogin";
+import login from "@/services/apis/login";
 
 export default function LoginPage() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Access the store to navigate away after login
+
   const setActiveTab = useUIStore((s) => s.setActiveTab);
-  const {login}  = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate an API call
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   setActiveTab("dashboard"); 
-    // }, 1500);
     login(
       (data) => {
         setLoading(false);
-        // This changes the Zustand state, triggering App.tsx to show <ValidateOtp />
-        setActiveTab("validate"); 
+        setActiveTab("validate");
       },
       (err) => {
         setLoading(false);
-        setError("Connection failed. Please check CORS or Network.");
-      }
+        setError("Connection failed.");
+      },
     );
   };
 
@@ -39,10 +31,25 @@ export default function LoginPage() {
 
   return (
     <div style={styles.container}>
+      {error && (
+        <div
+          style={{
+            color: "#ff4d4d",
+            fontSize: "12px",
+            marginBottom: "10px",
+            textAlign: "center",
+            border: "1px solid #ff4d4d",
+            padding: "8px",
+            borderRadius: "4px",
+            background: "rgba(255, 77, 77, 0.1)",
+          }}
+        >
+          {error}
+        </div>
+      )}
       <div style={styles.loginCard}>
         <header style={styles.header}>
           <h2 style={styles.title}>System Login</h2>
-          {/* <p style={styles.subtitle}>Enter credentials to access terminal</p> */}
         </header>
 
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -72,24 +79,18 @@ export default function LoginPage() {
             />
           </div>
 
-          <button 
-            type="submit" 
-            disabled={loading} 
-            style={{ 
-              ...styles.button, 
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              ...styles.button,
               opacity: loading ? 0.7 : 1,
-              cursor: loading ? "not-allowed" : "pointer" 
+              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
             {loading ? "AUTHENTICATING..." : "INITIALIZE SESSION"}
           </button>
         </form>
-
-        {/* <div style={styles.footer}>
-          <span>Secured Connection: AES-256</span>
-          <span style={styles.dot}>•</span>
-          <span>v1.0.4</span>
-        </div> */}
       </div>
     </div>
   );
@@ -176,5 +177,5 @@ const styles: Record<string, React.CSSProperties> = {
   },
   dot: {
     color: "#444",
-  }
+  },
 };
