@@ -13,7 +13,7 @@ export const getHeaders = (accessToken?:string) => {
     const current_timestamp = timeStampGenerator();
     const headers: any = {
         "Authorization": `Bearer ${accessToken}`,
-          "content-type": "application/json",
+        "content-type": "application/json",
         "appName": "NVantage - Middleware Qa",
         "buildNumber": "10005",
         "packageName": "com.coditas.omnenest.omnenest_mobile_app.middlewareqa",

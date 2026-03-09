@@ -9,7 +9,9 @@ import { useUIStore } from "@/store/ui.store";
 import Loader from "./shared/components/Loader";
 import LoginPage from "./pages/LoginPage";
 import ValidateOtp from "./shared/components/ValidateOtp";
-import Watchlist from "./shared/components/Watchlist";
+import Watchlist from "@/features/watchlist/Watchlist";
+import List from "@/features/watchlist/List";
+import IndicesPage from "./pages/IndicesPage";
 
 
 export default function App() {
@@ -18,6 +20,8 @@ export default function App() {
 
   const activeTab = useUIStore((s) => s.activeTab);
   const accessToken = useUIStore((s) => s.accessToken);
+  const watchlistId = useUIStore((s) => s.watchlistId);
+  const setActiveTab = useUIStore((s) => s.setActiveTab);
 
   const renderTab = () => {
     if (!accessToken && !["login", "preAuth", "validate"].includes(activeTab)) {
@@ -32,6 +36,8 @@ export default function App() {
       case "watchlistAPI":  return <Watchlist />;
       case "preAuth":    return <Loader />;
       case "validate":    return <ValidateOtp />;
+      case "list":       return <List watchlistId={watchlistId} onBack={() => setActiveTab('watchlistAPI')}/>;
+      case "indices":   return <IndicesPage />;
       default:           return <DashboardPage />;
     }
     

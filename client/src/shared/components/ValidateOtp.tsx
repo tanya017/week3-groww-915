@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import { useUIStore } from "@/store/ui.store";
-import verify from "../../services/apis/verify";
+import validateOtp from "../../services/apis/validateOtp";
 
 export default function ValidateOtp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setActiveTab = useUIStore((s) => s.setActiveTab);
   const setAccessToken = useUIStore((s) => s.setAccessToken);
-  // const { verify } = useVerifyOtp();
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    verify(
+    validateOtp(
       (data) => {
         setLoading(false);
         const token = data.token || data.jwtTokens.accessToken;
         if (token) {
-        setAccessToken(token); // Save to Store + LocalStorage
+        setAccessToken(token);
         console.log("OTP Verified Successfully");
         setActiveTab("dashboard");
       }
